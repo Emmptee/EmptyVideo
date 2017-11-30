@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.zhy.autolayout.AutoRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.douglas.videolive.view.common.activity.MainActivity">
+    tools:context=".view.common.activity.MainActivity">
 
     <com.zhy.autolayout.AutoFrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/mainTabBar"/>
+    <com.douglas.videolive.ui.NavigateTabBar
+        android:id="@+id/mainTabBar"
+        android:layout_width="match_parent"
+        android:layout_height="50.0dip"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white"
+        app:containerId="@+id/main_container"
+        app:navigateTabSelectedTextColor="@color/comui_tab_select_color"
+        app:navigateTabTextColor="@color/comui_tab_text_color"
+        app:navigateTabTextSize="11sp"
         />
-    <
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mainTabBar"
+        android:background="@mipmap/comui_bar_top_shadow"/>
+</com.zhy.autolayout.AutoRelativeLayout>
