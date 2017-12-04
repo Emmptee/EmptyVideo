@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 23
     defaultConfig {
         applicationId "com.douglas.videolive"
         minSdkVersion 23
@@ -15,6 +15,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildToolsVersion '26.0.2'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -43,6 +48,7 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.0@aar'
 
     //RxLifecycle 内存泄露
+
     //RxLifecycle 内存泄露
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.trello:rxlifecycle-components:0.6.1'
@@ -84,7 +90,6 @@ dependencies {
     //  通用PopupWindow
     compile 'com.github.razerdp:BasePopup:v1.6.2'
     compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
-
 
     //     BugLy   bug上传！
     compile 'com.tencent.bugly:crashreport:latest.release'

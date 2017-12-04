@@ -1,4 +1,4 @@
-package com.douglas.videolive.api.video;
+package com.douglas.videolive.api;
 
 /**
  * 作者：gaoyin
