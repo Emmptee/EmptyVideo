@@ -3,7 +3,6 @@ package com.douglas.videolive.ui;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.gesture.Gesture;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -263,14 +262,14 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceStage){
+    public void onRestoreInstanceState(Bundle savedInstanceStage) {
         if (savedInstanceStage != null) {
             mRestoreTag = savedInstanceStage.getString(KEY_CURRENT_TAG);
         }
     }
 
-    public void onSaveInstanceState(Bundle outState){
-        outState.putString(KEY_CURRENT_TAG,mCurrentTag);
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putString(KEY_CURRENT_TAG, mCurrentTag);
     }
 
     public static class ViewHolder {
@@ -348,7 +347,7 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         }
     }
 
-    public int getCurrentSelectedTab(){
+    public int getCurrentSelectedTab() {
         return mCurrentSelectedTab;
     }
 }

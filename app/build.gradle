@@ -43,8 +43,11 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.0@aar'
 
     //RxLifecycle 内存泄露
+    //RxLifecycle 内存泄露
     compile 'com.trello:rxlifecycle:0.6.1'
     compile 'com.trello:rxlifecycle-components:0.6.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
 
     //    网络依赖库日志打印
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
