@@ -83,6 +83,8 @@ dependencies {
 
     //  通用PopupWindow
     compile 'com.github.razerdp:BasePopup:v1.6.2'
+    compile files('libs/tbs_sdk_thirdapp_v3.1.0.1034_43100_sharewithdownload_obfs_20170301_182143.jar')
+
 
     //     BugLy   bug上传！
     compile 'com.tencent.bugly:crashreport:latest.release'
@@ -100,4 +102,7 @@ dependencies {
     //    UI卡顿检查工具
     compile 'com.github.markzhai:blockcanary-android:1.5.0'
     implementation project(':InitActivty')
+
+    //klog
+    compile 'com.github.zhaokaiqiang.klog:library:1.6.0'
 }
