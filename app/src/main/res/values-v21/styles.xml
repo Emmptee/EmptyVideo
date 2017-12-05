@@ -1,18 +1,20 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
     <!--设置软件主题-->
-    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
     <!--滑动返回主题-->
     <style name="AppTheme.NoActionBar.AppBaseTheme">
         <!--设置窗口为透明窗体，所以APP启动时的黑白屏也变成了透明的-->
@@ -20,7 +22,7 @@
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
     </style>
     <!--主界面主题-->
-    <style name="AppTheme.NoActionBar.AppBaseThemeMain">
+    <style name="AppTheme.NoActionBar.AppBaseThemeMain" >
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
     </style>
@@ -31,7 +33,6 @@
         <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
     </style>
-
     <style name="AppTheme.NoActionBar.AppWelcome">
         <item name="android:windowBackground">@mipmap/bg_splash</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -80,7 +81,6 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
-
     <style name="BannerDefaultStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/wh140.0dimens140.0dp</item>
@@ -109,16 +109,5 @@
         <item name="banner_tipTextColor">@android:color/white</item>
         <!--&lt;!&ndash; 加载网络数据时覆盖在BGABanner最上层的占位图 &ndash;&gt;-->
         <!--<item name="banner_placeholderDrawable">@drawable/holder</item>-->
-    </style>
-
-    <style name="MainDialog" parent="@android:style/Theme.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowFrame">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:background">@null</item>
-        <item name="android:windowAnimationStyle">@null</item>
     </style>
 </resources>

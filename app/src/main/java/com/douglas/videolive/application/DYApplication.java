@@ -2,11 +2,10 @@ package com.douglas.videolive.application;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.BatteryManager;
 import android.os.Process;
 import android.text.TextUtils;
 
-import com.douglas.videolive.api.video.NetWorkApi;
+import com.douglas.videolive.api.NetWorkApi;
 import com.douglas.videolive.net.config.NetWorkConfiguration;
 import com.douglas.videolive.net.http.HttpUtils;
 import com.douglas.videolive.ui.pagestatemanager.PageManager;
@@ -45,15 +44,15 @@ public class DYApplication extends Application {
         /*UI卡顿检测*/
         BlockCanary.install(this, new AppBlockCanaryContext()).start();
         /*搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核*/
-        QbSdk.PreInitCallback callback =new QbSdk.PreInitCallback() {
+        QbSdk.PreInitCallback callback = new QbSdk.PreInitCallback() {
             @Override
             public void onCoreInitFinished() {
-                KLog.e(TAG,"onCoreInitFinished ");
+                KLog.e(TAG, "onCoreInitFinished ");
             }
 
             @Override
             public void onViewInitFinished(boolean b) {
-                KLog.e(TAG,"onViewInitFinished is " + b);
+                KLog.e(TAG, "onViewInitFinished is " + b);
 
             }
         };
@@ -61,21 +60,21 @@ public class DYApplication extends Application {
         QbSdk.setTbsListener(new TbsListener() {
             @Override
             public void onDownloadFinish(int i) {
-                KLog.d(TAG,"onDownloadFinish is " + i);
+                KLog.d(TAG, "onDownloadFinish is " + i);
             }
 
             @Override
             public void onInstallFinish(int i) {
-                KLog.d(TAG,"onInstallFinish is " + i);
+                KLog.d(TAG, "onInstallFinish is " + i);
             }
 
             @Override
             public void onDownloadProgress(int i) {
-                KLog.d(TAG,"onDownloadProgress is " + i);
+                KLog.d(TAG, "onDownloadProgress is " + i);
             }
         });
 
-        QbSdk.initX5Environment(getApplicationContext(),callback);
+        QbSdk.initX5Environment(getApplicationContext(), callback);
         //网络库初始化
         initOkHttpUtils();
         PageManager.initInApp(context);
@@ -109,13 +108,14 @@ public class DYApplication extends Application {
         return null;
     }
 
-    private void initLeakCanary(){
-        if (LeakCanary.isInAnalyzerProcess(this)){
+    private void initLeakCanary() {
+        if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
         LeakCanary.install(this);
     }
-    private void initOkHttpUtils(){
+
+    private void initOkHttpUtils() {
         NetWorkConfiguration configuration = new NetWorkConfiguration(this)
                 .baseUrl(NetWorkApi.baseUrl)
                 .isCache(true)
@@ -123,7 +123,8 @@ public class DYApplication extends Application {
                 .isMemoryCache(true);
         HttpUtils.setConFiguration(configuration);
     }
-    public static Context getContext(){
+
+    public static Context getContext() {
         return context;
     }
 

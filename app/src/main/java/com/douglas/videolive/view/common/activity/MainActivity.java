@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements BaseView{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
-        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
+//        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
         mNavigateTabBar.addTab(HomeFragment.class, new NavigateTabBar.TabParam(R.mipmap.home_pressed,
                 R.mipmap.home_selected, TAG_PAGE_HOME));
         mNavigateTabBar.addTab(LiveFragment.class, new NavigateTabBar.TabParam(R.mipmap.live_pressed,
