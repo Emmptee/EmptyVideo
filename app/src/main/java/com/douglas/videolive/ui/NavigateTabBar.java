@@ -33,31 +33,41 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
     private FragmentActivity mFragmentActivity;
     private String mCurrentTag;
     private String mRestoreTag;
+
+    /*主内容显示区域View的id*/
     private int mMainContentLayoutId;
+    /*选中的Tab文字颜色*/
     private ColorStateList mSelectedTextColor;
-    private ColorStateList mNomalTextColor;
+    /*正常的Tab文字颜色*/
+    private ColorStateList mNormalTextColor;
+    /*Tab文字的颜色*/
     private float mTabTextSize;
+    /*默认选中的tab index*/
     private int mDefaultSelectedTab = 0;
+
     private int mCurrentSelectedTab;
 
     public NavigateTabBar(Context context) {
-        super(context);
+        this(context, null);
     }
 
-    public NavigateTabBar(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
+    public NavigateTabBar(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
     }
 
-    public NavigateTabBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public NavigateTabBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
-                R.styleable.NavigateTabBar, 0, 0);
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.NavigateTabBar, 0, 0);
+
         ColorStateList tabTextColor = typedArray.getColorStateList(R.styleable.NavigateTabBar_navigateTabTextColor);
         ColorStateList selectedTabTextColor = typedArray.getColorStateList(R.styleable.NavigateTabBar_navigateTabSelectedTextColor);
+
         mTabTextSize = typedArray.getDimensionPixelSize(R.styleable.NavigateTabBar_navigateTabTextSize, 0);
         mMainContentLayoutId = typedArray.getResourceId(R.styleable.NavigateTabBar_containerId, 0);
-        mNomalTextColor = (tabTextColor != null ? tabTextColor : context.getResources().getColorStateList(R.color.tab_text_normal));
+
+        mNormalTextColor = (tabTextColor != null ? tabTextColor : context.getResources().getColorStateList(R.color.tab_text_normal));
+
 
         if (selectedTabTextColor != null) {
             mSelectedTextColor = selectedTabTextColor;
@@ -69,11 +79,14 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         }
 
         mViewHolderList = new ArrayList<>();
-
     }
+
 
     public void addTab(Class frameLayoutClass, TabParam tabParam) {
         int defaultLayout = R.layout.comui_tab_view;
+//        if (tabParam.tabViewResId > 0) {
+//            defaultLayout = tabParam.tabViewResId;
+//        }
         if (TextUtils.isEmpty(tabParam.title)) {
             tabParam.title = getContext().getString(tabParam.titleStringRes);
         }
@@ -81,26 +94,28 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         View view = LayoutInflater.from(getContext()).inflate(defaultLayout, null);
         view.setFocusable(true);
 
-        ViewHolder viewHolder = new ViewHolder();
-        viewHolder.tabIndex = mViewHolderList.size();
-        viewHolder.fragmentClass = frameLayoutClass;
-        viewHolder.tag = tabParam.title;
-        viewHolder.pageParam = tabParam;
-        viewHolder.tabIcon = (ImageView) view.findViewById(R.id.tab_icon);
-        viewHolder.tabTitle = ((TextView) view.findViewById(R.id.tab_title));
+        ViewHolder holder = new ViewHolder();
+
+        holder.tabIndex = mViewHolderList.size();
+
+        holder.fragmentClass = frameLayoutClass;
+        holder.tag = tabParam.title;
+        holder.pageParam = tabParam;
+
+        holder.tabIcon = (ImageView) view.findViewById(R.id.tab_icon);
+        holder.tabTitle = ((TextView) view.findViewById(R.id.tab_title));
 
         if (TextUtils.isEmpty(tabParam.title)) {
-            viewHolder.tabTitle.setVisibility(INVISIBLE);
+            holder.tabTitle.setVisibility(View.INVISIBLE);
         } else {
-            viewHolder.tabTitle.setText(tabParam.title);
+            holder.tabTitle.setText(tabParam.title);
         }
 
         if (mTabTextSize != 0) {
-            viewHolder.tabTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
+            holder.tabTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTabTextSize);
         }
-
-        if (mNomalTextColor != null) {
-            viewHolder.tabTitle.setTextColor(mNomalTextColor);
+        if (mNormalTextColor != null) {
+            holder.tabTitle.setTextColor(mNormalTextColor);
         }
 
         if (tabParam.backgroundColor > 0) {
@@ -108,18 +123,18 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         }
 
         if (tabParam.iconResId > 0) {
-            viewHolder.tabIcon.setImageResource(tabParam.iconResId);
+            holder.tabIcon.setImageResource(tabParam.iconResId);
         } else {
-            viewHolder.tabIcon.setVisibility(INVISIBLE);
+            holder.tabIcon.setVisibility(View.INVISIBLE);
         }
 
-        if (tabParam.iconResId > 0 && tabParam.iconSekectedResId > 0) {
-            view.setTag(viewHolder);
+        if (tabParam.iconResId > 0 && tabParam.iconSelectedResId > 0) {
+            view.setTag(holder);
             view.setOnClickListener(this);
-            mViewHolderList.add(viewHolder);
+            mViewHolderList.add(holder);
         }
 
-        addView(view, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f));
+        addView(view, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0F));
 
     }
 
@@ -135,17 +150,15 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         if (!(getContext() instanceof FragmentActivity)) {
             throw new RuntimeException("parent activity must is extends FragmentActivity");
         }
-
         mFragmentActivity = (FragmentActivity) getContext();
 
         ViewHolder defaultHolder = null;
-        hideAllFragment();
 
+        hideAllFragment();
         if (!TextUtils.isEmpty(mRestoreTag)) {
-            for (ViewHolder viewHolder : mViewHolderList) {
-                if (TextUtils.equals(mRestoreTag, viewHolder.tag)) ;
-                {
-                    defaultHolder = viewHolder;
+            for (ViewHolder holder : mViewHolderList) {
+                if (TextUtils.equals(mRestoreTag, holder.tag)) {
+                    defaultHolder = holder;
                     mRestoreTag = null;
                     break;
                 }
@@ -155,26 +168,30 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         }
 
         showFragment(defaultHolder);
-
     }
 
     @Override
     public void onClick(View v) {
         Object object = v.getTag();
-        if (object == null && object instanceof ViewHolder) {
+        if (object != null && object instanceof ViewHolder) {
             ViewHolder holder = (ViewHolder) v.getTag();
+//            showFragment(holder);
             if (mTabSelectListener != null) {
                 mTabSelectListener.onTabSelected(holder);
             }
         }
     }
 
+    /**
+     * 显示 holder 对应的 fragment
+     *
+     * @param holder
+     */
     public void showFragment(ViewHolder holder) {
         FragmentTransaction transaction = mFragmentActivity.getSupportFragmentManager().beginTransaction();
         if (isFragmentShown(transaction, holder.tag)) {
             return;
         }
-
         setCurrSelectedTabByTag(holder.tag);
 
         Fragment fragment = mFragmentActivity.getSupportFragmentManager().findFragmentByTag(holder.tag);
@@ -205,17 +222,18 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         return false;
     }
 
-    public void setCurrSelectedTabByTag(String tag) {
+    /*设置当前选中tab的图片和文字颜色*/
+    private void setCurrSelectedTabByTag(String tag) {
         if (TextUtils.equals(mCurrentTag, tag)) {
             return;
         }
-        for (ViewHolder viewHolder : mViewHolderList) {
-            if (TextUtils.equals(mCurrentTag, viewHolder.tag)) {
-                viewHolder.tabIcon.setImageResource(viewHolder.pageParam.iconResId);
-                viewHolder.tabTitle.setTextColor(mNomalTextColor);
-            } else if (TextUtils.equals(tag, viewHolder.tag)) {
-                viewHolder.tabIcon.setImageResource(viewHolder.pageParam.iconSekectedResId);
-                viewHolder.tabTitle.setTextColor(mSelectedTextColor);
+        for (ViewHolder holder : mViewHolderList) {
+            if (TextUtils.equals(mCurrentTag, holder.tag)) {
+                holder.tabIcon.setImageResource(holder.pageParam.iconResId);
+                holder.tabTitle.setTextColor(mNormalTextColor);
+            } else if (TextUtils.equals(tag, holder.tag)) {
+                holder.tabIcon.setImageResource(holder.pageParam.iconSelectedResId);
+                holder.tabTitle.setTextColor(mSelectedTextColor);
             }
         }
         mCurrentTag = tag;
@@ -223,10 +241,10 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
 
     private Fragment getFragmentInstance(String tag) {
         Fragment fragment = null;
-        for (ViewHolder viewHolder : mViewHolderList) {
-            if (TextUtils.equals(tag, viewHolder.tag)) {
+        for (ViewHolder holder : mViewHolderList) {
+            if (TextUtils.equals(tag, holder.tag)) {
                 try {
-                    fragment = (Fragment) Class.forName(viewHolder.fragmentClass.getName()).newInstance();
+                    fragment = (Fragment) Class.forName(holder.fragmentClass.getName()).newInstance();
                 } catch (InstantiationException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
@@ -240,16 +258,14 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         return fragment;
     }
 
-
     private void hideAllFragment() {
         if (mViewHolderList == null || mViewHolderList.size() == 0) {
             return;
         }
-
         FragmentTransaction transaction = mFragmentActivity.getSupportFragmentManager().beginTransaction();
 
-        for (ViewHolder viewHolder : mViewHolderList) {
-            Fragment fragment = mFragmentActivity.getSupportFragmentManager().findFragmentByTag(viewHolder.tag);
+        for (ViewHolder holder : mViewHolderList) {
+            Fragment fragment = mFragmentActivity.getSupportFragmentManager().findFragmentByTag(holder.tag);
             if (fragment != null && !fragment.isHidden()) {
                 transaction.hide(fragment);
             }
@@ -257,14 +273,29 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         transaction.commit();
     }
 
-
-    public NavigateTabBar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
+    public void setSelectedTabTextColor(ColorStateList selectedTextColor) {
+        mSelectedTextColor = selectedTextColor;
     }
 
-    public void onRestoreInstanceState(Bundle savedInstanceStage) {
-        if (savedInstanceStage != null) {
-            mRestoreTag = savedInstanceStage.getString(KEY_CURRENT_TAG);
+    public void setSelectedTabTextColor(int color) {
+        mSelectedTextColor = ColorStateList.valueOf(color);
+    }
+
+    public void setTabTextColor(ColorStateList color) {
+        mNormalTextColor = color;
+    }
+
+    public void setTabTextColor(int color) {
+        mNormalTextColor = ColorStateList.valueOf(color);
+    }
+
+    public void setFrameLayoutId(int frameLayoutId) {
+        mMainContentLayoutId = frameLayoutId;
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mRestoreTag = savedInstanceState.getString(KEY_CURRENT_TAG);
         }
     }
 
@@ -285,46 +316,38 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
     public static class TabParam {
         public int backgroundColor = android.R.color.white;
         public int iconResId;
-        public int iconSekectedResId;
+        public int iconSelectedResId;
         public int titleStringRes;
+        //        public int tabViewResId;
         public String title;
 
-        public TabParam(int iconResId, int iconSekectedResId, String title) {
+        public TabParam(int iconResId, int iconSelectedResId, String title) {
             this.iconResId = iconResId;
-            this.iconSekectedResId = iconSekectedResId;
+            this.iconSelectedResId = iconSelectedResId;
             this.title = title;
         }
 
-        public TabParam(int backgroundColor, int iconResId, int iconSekectedResId, int titleStringRes, String title) {
+        public TabParam(int iconResId, int iconSelectedResId, int titleStringRes) {
+            this.iconResId = iconResId;
+            this.iconSelectedResId = iconSelectedResId;
+            this.titleStringRes = titleStringRes;
+        }
+
+        public TabParam(int backgroundColor, int iconResId, int iconSelectedResId, int titleStringRes) {
             this.backgroundColor = backgroundColor;
             this.iconResId = iconResId;
-            this.iconSekectedResId = iconSekectedResId;
+            this.iconSelectedResId = iconSelectedResId;
             this.titleStringRes = titleStringRes;
+        }
+
+        public TabParam(int backgroundColor, int iconResId, int iconSelectedResId, String title) {
+            this.backgroundColor = backgroundColor;
+            this.iconResId = iconResId;
+            this.iconSelectedResId = iconSelectedResId;
             this.title = title;
-        }
-
-        public TabParam(int backgroundColor, int iconResId, int iconSekectedResId, String title) {
-            this.backgroundColor = backgroundColor;
-            this.iconResId = iconResId;
-            this.iconSekectedResId = iconSekectedResId;
-            this.title = title;
-        }
-
-        public TabParam(int backgroundColor, int iconResId, int iconSekectedResId, int titleStringRes) {
-
-            this.backgroundColor = backgroundColor;
-            this.iconResId = iconResId;
-            this.iconSekectedResId = iconSekectedResId;
-            this.titleStringRes = titleStringRes;
-        }
-
-        public TabParam(int iconResId, int iconSekectedResId, int titleStringRes) {
-
-            this.iconResId = iconResId;
-            this.iconSekectedResId = iconSekectedResId;
-            this.titleStringRes = titleStringRes;
         }
     }
+
 
     public interface OnTabSelectedListener {
         void onTabSelected(ViewHolder holder);
@@ -347,7 +370,7 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         }
     }
 
-    public int getCurrentSelectedTab() {
+    public int getCurrentSelectedTab(){
         return mCurrentSelectedTab;
     }
 }

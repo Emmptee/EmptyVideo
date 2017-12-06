@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
    */
 
 public class GuideActivity extends AppCompatActivity {
+    private static final String TAG = "GuideActivity";
     Context context = this;
 
     @BindView(R.id.guide)
@@ -25,15 +26,15 @@ public class GuideActivity extends AppCompatActivity {
             R.mipmap.guide_bg1,
             R.mipmap.guide_bg2,
             R.mipmap.guide_bg3,
-            R.mipmap.guide_bg4
-    };
+            R.mipmap.guide_bg4};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
         ButterKnife.bind(this);
-        GuideAdapter guideAdapter = new GuideAdapter(guides, context);
-        vp_guide.setAdapter(guideAdapter);
+        GuideAdapter adapter = new GuideAdapter(guides, context);
+
+        vp_guide.setAdapter(adapter);
     }
 }

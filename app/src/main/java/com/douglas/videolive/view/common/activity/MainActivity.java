@@ -1,5 +1,6 @@
 package com.douglas.videolive.view.common.activity;
 
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,72 +19,91 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements BaseView{
-    private static final String TAG = "MainActivity";
+public class MainActivity extends  AppCompatActivity implements BaseView{
     private static final String TAG_PAGE_HOME = "首页";
-    private static final String TAG_PAGE_LIVE = "直播";
+    private static final String TAG_PAGE_LIVE= "直播";
     private static final String TAG_PAGE_VIDEO = "视频";
     private static final String TAG_PAGE_FOLLOW = "关注";
     private static final String TAG_PAGE_USER = "我的";
-
-    private long exitTime = 0;
     protected Unbinder unbinder;
+    //    退出时间
+    private long exitTime = 0;
 
     @BindView(R.id.mainTabBar)
     NavigateTabBar mNavigateTabBar;
+    NavigateTabBar.ViewHolder mHolder;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
-//        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
-        mNavigateTabBar.addTab(HomeFragment.class, new NavigateTabBar.TabParam(R.mipmap.home_pressed,
-                R.mipmap.home_selected, TAG_PAGE_HOME));
-        mNavigateTabBar.addTab(LiveFragment.class, new NavigateTabBar.TabParam(R.mipmap.live_pressed,
-                R.mipmap.live_selected, TAG_PAGE_LIVE));
-        mNavigateTabBar.addTab(VideoFragment.class, new NavigateTabBar.TabParam(R.mipmap.video,
-                R.mipmap.video_selected, TAG_PAGE_VIDEO));
-        mNavigateTabBar.addTab(FollowFragment.class, new NavigateTabBar.TabParam(R.mipmap.follow_pressed,
-                R.mipmap.follow_selected, TAG_PAGE_FOLLOW));
-        mNavigateTabBar.addTab(UserFragment.class, new NavigateTabBar.TabParam(R.mipmap.user_pressed,
-                R.mipmap.user_selected, TAG_PAGE_USER));
+        mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
+        mNavigateTabBar.addTab(HomeFragment.class, new NavigateTabBar.TabParam(
+                R.mipmap.home_pressed, R.mipmap.home_selected,TAG_PAGE_HOME));
+        mNavigateTabBar.addTab(LiveFragment.class, new NavigateTabBar.TabParam(
+                R.mipmap.live_pressed, R.mipmap.live_selected, TAG_PAGE_LIVE));
+        mNavigateTabBar.addTab(VideoFragment.class, new NavigateTabBar.TabParam(
+                R.mipmap.video, R.mipmap.video_selected, TAG_PAGE_VIDEO));
+        mNavigateTabBar.addTab(FollowFragment.class, new NavigateTabBar.TabParam(
+                R.mipmap.follow_pressed, R.mipmap.follow_selected, TAG_PAGE_FOLLOW));
+        mNavigateTabBar.addTab(UserFragment.class, new NavigateTabBar.TabParam(
+                R.mipmap.user_pressed, R.mipmap.user_selected, TAG_PAGE_USER));
         mNavigateTabBar.setTabSelectListener(new NavigateTabBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(NavigateTabBar.ViewHolder holder) {
+//                Toast.makeText(MainActivity.this, "信息为:"+holder.tag, Toast.LENGTH_SHORT).show();
                 switch (holder.tag.toString()) {
+//                    首页
                     case TAG_PAGE_HOME:
                         mNavigateTabBar.showFragment(holder);
                         break;
+//                    直播
                     case TAG_PAGE_LIVE:
                         mNavigateTabBar.showFragment(holder);
                         break;
+//                    视频
                     case TAG_PAGE_VIDEO:
                         mNavigateTabBar.showFragment(holder);
                         break;
+//                    关注
                     case TAG_PAGE_FOLLOW:
                         mNavigateTabBar.showFragment(holder);
                         break;
+//                    我的
                     case TAG_PAGE_USER:
-                        mNavigateTabBar.showFragment(holder);
-                        break;
-                    default:
+                        if(mNavigateTabBar!=null)
+                            mNavigateTabBar.showFragment(holder);
                         break;
                 }
             }
         });
+//        // 获取所有权限
+//        PermissionUtil.requestAllPermission(new PermissionUtil.RequestPermission() {
+//            @Override
+//            public void onRequestPermissionSuccess() {
+//
+//            }
+//
+//            @Override
+//            public void onRequestPermissionFailed() {
+//
+//            }
+//        }, new RxPermissions(MainActivity.this),this);
     }
 
     @Override
     protected void onRestart() {
+
         super.onRestart();
     }
 
     /**
-     * 退出需要点击两次返回键
-     * @param keyCode
-     * @param event
-     * @return
+     * 拦截返回键，要求点击两次返回键才退出应用
+     *
+     * @param keyCode 按键代码
+     * @param event   点击事件
+     * @return 是否处理本次事件
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -96,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements BaseView{
 
     private void exit() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            Toast.makeText(getApplicationContext(), "再来一次", Toast.LENGTH_LONG);
+            Toast.makeText(getApplicationContext(), "再按一次退出程序",
+                    Toast.LENGTH_SHORT).show();
             exitTime = System.currentTimeMillis();
         } else {
             finish();
@@ -112,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements BaseView{
         }
     }
 
+     /**
+     * 保存数据状态
+     *
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

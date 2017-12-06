@@ -1,8 +1,37 @@
 package com.douglas.videolive.view.home.fragment;
 
+import android.os.Bundle;
+
+import com.douglas.videolive.base.BaseFragment;
+import com.douglas.videolive.base.BaseView;
+
 /**
  * Created by shidongfang on 2017/11/30.
  */
 
-public class HomeFragment {
+public class HomeFragment extends BaseFragment{
+    @Override
+    protected int getLayoutId() {
+        return 0;
+    }
+
+    @Override
+    protected void onInitView(Bundle bundle) {
+
+    }
+
+    @Override
+    protected void onEvent() {
+
+    }
+
+    @Override
+    protected BaseView getViewImp() {
+        return null;
+    }
+
+    @Override
+    protected void lazyFetchData() {
+
+    }
 }
