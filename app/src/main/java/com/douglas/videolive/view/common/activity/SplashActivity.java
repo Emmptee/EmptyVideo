@@ -11,17 +11,13 @@ import com.douglas.videolive.R;
 import com.douglas.videolive.utils.SharedPreferenceUtils;
 
 
-/**
- * Created by shidongfang on 2017/12/5.
- */
-
 public class SplashActivity extends AppCompatActivity {
     Handler handler;
     Intent intent;
     private boolean isFirst;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //全屏
@@ -29,8 +25,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 //        这步取值操作不能放在run中，否则会执行两次导致页面跳转出错
         isFirst = SharedPreferenceUtils.getBooleanData("isFirst", true);
+//        LogUtils.e("isFirst=" + isFirst);
         handler = new Handler();
+//        使用lamb代替new Runnable
         handler.postDelayed(() -> {
+//                LogUtils.e(Thread.currentThread().getName() + "++++");
             if (isFinishing()) {
                 return;
             }

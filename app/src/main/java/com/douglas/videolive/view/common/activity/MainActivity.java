@@ -1,25 +1,37 @@
 package com.douglas.videolive.view.common.activity;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.douglas.videolive.base.BaseView;
+
 import com.douglas.videolive.R;
+import com.douglas.videolive.base.BaseView;
 import com.douglas.videolive.ui.NavigateTabBar;
 import com.douglas.videolive.view.follow.FollowFragment;
-import com.douglas.videolive.view.home.fragment.HomeFragment;
-import com.douglas.videolive.view.live.fragment.LiveFragment;
+import com.douglas.videolive.view.home.HomeFragment;
+import com.douglas.videolive.view.live.LiveFragment;
 import com.douglas.videolive.view.user.UserFragment;
-import com.douglas.videolive.view.video.fragment.VideoFragment;
+import com.douglas.videolive.view.video.VideoFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends  AppCompatActivity implements BaseView{
+import static com.douglas.videolive.R.id.mainTabBar;
+
+/**
+ *  作者：gaoyin
+ *  电话：18810474975
+ *  邮箱：18810474975@163.com
+ *  版本号：1.0
+ *  类描述：
+ *  备注消息：
+ *  修改时间：2016/11/30 上午9:56
+ **/
+public class MainActivity extends AppCompatActivity implements BaseView {
     private static final String TAG_PAGE_HOME = "首页";
     private static final String TAG_PAGE_LIVE= "直播";
     private static final String TAG_PAGE_VIDEO = "视频";
@@ -29,7 +41,7 @@ public class MainActivity extends  AppCompatActivity implements BaseView{
     //    退出时间
     private long exitTime = 0;
 
-    @BindView(R.id.mainTabBar)
+    @BindView(mainTabBar)
     NavigateTabBar mNavigateTabBar;
     NavigateTabBar.ViewHolder mHolder;
 
@@ -39,16 +51,16 @@ public class MainActivity extends  AppCompatActivity implements BaseView{
         setContentView(R.layout.activity_main);
         unbinder = ButterKnife.bind(this);
         mNavigateTabBar.onRestoreInstanceState(savedInstanceState);
-        mNavigateTabBar.addTab(HomeFragment.class, new NavigateTabBar.TabParam(
-                R.mipmap.home_pressed, R.mipmap.home_selected,TAG_PAGE_HOME));
-        mNavigateTabBar.addTab(LiveFragment.class, new NavigateTabBar.TabParam(
-                R.mipmap.live_pressed, R.mipmap.live_selected, TAG_PAGE_LIVE));
-        mNavigateTabBar.addTab(VideoFragment.class, new NavigateTabBar.TabParam(
-                R.mipmap.video, R.mipmap.video_selected, TAG_PAGE_VIDEO));
-        mNavigateTabBar.addTab(FollowFragment.class, new NavigateTabBar.TabParam(
-                R.mipmap.follow_pressed, R.mipmap.follow_selected, TAG_PAGE_FOLLOW));
-        mNavigateTabBar.addTab(UserFragment.class, new NavigateTabBar.TabParam(
-                R.mipmap.user_pressed, R.mipmap.user_selected, TAG_PAGE_USER));
+        mNavigateTabBar.addTab(HomeFragment.class, new NavigateTabBar.TabParam(R.mipmap.home_pressed,
+                R.mipmap.home_selected,TAG_PAGE_HOME));
+        mNavigateTabBar.addTab(LiveFragment.class, new NavigateTabBar.TabParam(R.mipmap.live_pressed,
+                R.mipmap.live_selected, TAG_PAGE_LIVE));
+        mNavigateTabBar.addTab(VideoFragment.class, new NavigateTabBar.TabParam(R.mipmap.video,
+                R.mipmap.video_selected, TAG_PAGE_VIDEO));
+        mNavigateTabBar.addTab(FollowFragment.class, new NavigateTabBar.TabParam(R.mipmap.follow_pressed,
+                R.mipmap.follow_selected, TAG_PAGE_FOLLOW));
+        mNavigateTabBar.addTab(UserFragment.class, new NavigateTabBar.TabParam(R.mipmap.user_pressed,
+                R.mipmap.user_selected, TAG_PAGE_USER));
         mNavigateTabBar.setTabSelectListener(new NavigateTabBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(NavigateTabBar.ViewHolder holder) {
@@ -73,7 +85,7 @@ public class MainActivity extends  AppCompatActivity implements BaseView{
 //                    我的
                     case TAG_PAGE_USER:
                         if(mNavigateTabBar!=null)
-                            mNavigateTabBar.showFragment(holder);
+                        mNavigateTabBar.showFragment(holder);
                         break;
                 }
             }
@@ -133,7 +145,7 @@ public class MainActivity extends  AppCompatActivity implements BaseView{
         }
     }
 
-     /**
+    /**
      * 保存数据状态
      *
      * @param outState

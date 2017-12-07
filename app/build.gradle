@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+//apply plugin: 'com.neenbedankt.android-apt'//增加这一句
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 26
@@ -10,6 +12,12 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -42,8 +50,10 @@ dependencies {
     compile 'com.zhy:autolayout:1.4.5'
 
     //黄油刀
-    compile 'com.jakewharton:butterknife:8.1.0'
-
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+//    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.bigkoo:svprogresshud:1.0.6'
     //    侧滑返回
     compile 'me.imid.swipebacklayout.lib:library:1.0.0'
 

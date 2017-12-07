@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.douglas.videolive.R;
 import com.douglas.videolive.utils.ThemeUtils;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class NavigateTabBar extends LinearLayout implements View.OnClickListener {
     private static final String KEY_CURRENT_TAG = "com.startsmake.template.currentTag";
-
+    private static final String TAG = "NavigateTabBar";
     private List<ViewHolder> mViewHolderList;
     private OnTabSelectedListener mTabSelectListener;
     private FragmentActivity mFragmentActivity;
@@ -294,8 +295,10 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
     }
 
     public void onRestoreInstanceState(Bundle savedInstanceState) {
+        KLog.d(TAG,"onRestoreInstanceState");
         if (savedInstanceState != null) {
             mRestoreTag = savedInstanceState.getString(KEY_CURRENT_TAG);
+            KLog.e(TAG,"saveInstanceStage != null " + mRestoreTag);
         }
     }
 

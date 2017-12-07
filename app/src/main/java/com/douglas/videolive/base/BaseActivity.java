@@ -1,7 +1,8 @@
 package com.douglas.videolive.base;
 
-import android.content.Context;
+
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.douglas.videolive.model.ContractProxy;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -10,46 +11,50 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * Created by shidongfang on 2017/11/30.
- */
-
+ * 作者：gaoyin
+ * 电话：18810474975
+ * 邮箱：18810474975@163.com
+ * 版本号：1.0
+ * 类描述：
+ * 备注消息：
+ * 修改时间：2016/12/5 下午3:03
+ **/
 public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter> extends RxAppCompatActivity {
-    protected P mPressenter;//定义Presenter
+    //    定义Presenter
+    protected P mPresenter;
     protected Unbinder unbinder;
-    protected Context mContext;
 
-    protected abstract int getLayoutId();//获取资源文件
+    //    获取布局资源文件
+    protected abstract int getLayoutId();
 
-    protected abstract void onInitView(Bundle bundle);//初始化视图
+//    初始化数据
 
-    protected abstract void onEvent();//初始化时间Event
+    protected abstract void onInitView(Bundle bundle);
 
-    protected abstract BaseView getView();//获取抽取view对象
+//    初始化事件Event
 
-    /**
-     * 获得抽取接口Model对象
-     *
-     * @return
-     */
-    protected Class getModleClazz() {
+    protected abstract void onEvent();
+
+    //   获取抽取View对象
+    protected abstract BaseView getView();
+
+    //    获得抽取接口Model对象
+    protected Class getModelClazz() {
         return (Class<M>) ContractProxy.getModelClazz(getClass(), 0);
     }
 
-    /**
-     * 获取接口Presenter对象
-     *
-     * @return
-     */
+    //    获得抽取接口Presenter对象
     protected Class getPresenterClazz() {
         return (Class<P>) ContractProxy.getPresnterClazz(getClass(), 1);
     }
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getLayoutId() != 0) {
+//            设置布局资源文件
             setContentView(getLayoutId());
+//            注解绑定
             unbinder = ButterKnife.bind(this);
             bindMVP();
             onInitView(savedInstanceState);
@@ -57,10 +62,13 @@ public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter>
         }
     }
 
+    /**
+     * 获取presenter 实例
+     */
     private void bindMVP() {
         if (getPresenterClazz() != null) {
-            mPressenter = getPresenterImpl();
-            mPressenter.mContext = this;
+            mPresenter = getPresenterImpl();
+            mPresenter.mContext = this;
             bindVM();
         }
     }
@@ -69,34 +77,35 @@ public abstract class BaseActivity<M extends BaseModel, P extends BasePresenter>
         return ContractProxy.getInstance().presenter(getPresenterClazz());
     }
 
-    private void bindVM() {
-        if (mPressenter != null && mPressenter.isViewBind()
-                && getModleClazz() != null && getView() != null) {
-            ContractProxy.getInstance().bindModel(getModleClazz(), mPressenter);
-            ContractProxy.getInstance().bindView(getView(), mPressenter);
-            mPressenter.mContext = this;
-        }
-    }
-
     @Override
     protected void onStart() {
-        if (mPressenter == null) {
+        if (mPresenter == null) {
             bindMVP();
         }
         super.onStart();
     }
 
+    private void bindVM() {
+        if (mPresenter != null && !mPresenter.isViewBind() && getModelClazz() != null && getView() != null) {
+            ContractProxy.getInstance().bindModel(getModelClazz(), mPresenter);
+            ContractProxy.getInstance().bindView(getView(), mPresenter);
+            mPresenter.mContext = this;
+        }
+    }
+
+    /**
+     * activity摧毁
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (unbinder != null) {
             unbinder.unbind();
         }
-
-        if (mPressenter != null) {
-            ContractProxy.getInstance().unbindView(getView(), mPressenter);
-            ContractProxy.getInstance().unbindModel(getModleClazz(), mPressenter);
-            mPressenter = null;
+        if (mPresenter != null) {
+            ContractProxy.getInstance().unbindView(getView(), mPresenter);
+            ContractProxy.getInstance().unbindModel(getModelClazz(), mPresenter);
+            mPresenter = null;
         }
     }
 }
