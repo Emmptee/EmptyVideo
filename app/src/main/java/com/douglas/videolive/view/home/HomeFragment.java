@@ -10,7 +10,13 @@ import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.douglas.videolive.R;
 import com.douglas.videolive.base.BaseFragment;
 import com.douglas.videolive.base.BaseView;
+import com.douglas.videolive.model.home.HomeCateListModelLogic;
+import com.douglas.videolive.model.home.bean.HomeCateList;
+import com.douglas.videolive.presenter.home.HomeCateListContract;
+import com.douglas.videolive.presenter.home.impl.HomeCateListPresenterImp;
 import com.flyco.tablayout.SlidingTabLayout;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -18,7 +24,9 @@ import butterknife.BindView;
  * Created by shidongfang on 2017/12/7.
  */
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment<HomeCateListModelLogic,HomeCateListPresenterImp>
+        implements HomeCateListContract.View {
+
     private static final String TAG = "HomeFragment";
 
     SVProgressHUD svProgressHUD;
@@ -57,6 +65,16 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void lazyFetchData() {
+
+    }
+
+    @Override
+    public void showErrorWithStatus(String msg) {
+
+    }
+
+    @Override
+    public void getHomeAllList(List<HomeCateList> cateLists) {
 
     }
 }
