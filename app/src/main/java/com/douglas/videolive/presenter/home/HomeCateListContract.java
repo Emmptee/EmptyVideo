@@ -26,6 +26,6 @@ public interface HomeCateListContract {
     }
 
     abstract  class Presenter extends BasePresenter<View,Model>{
-        public abstract void getHomeCateList1();
+        public abstract void getHomeCateList();
     }
 }

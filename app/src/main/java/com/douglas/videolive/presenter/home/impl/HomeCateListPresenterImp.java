@@ -14,7 +14,7 @@ import java.util.List;
 public class HomeCateListPresenterImp extends HomeCateListContract.Presenter {
 
     @Override
-    public void getHomeCateList1() {
+    public void getHomeCateList() {
         addSubscribe(mModel.getHomeCateList(mContext).subscribe(new RxSubscriber<List<HomeCateList>>() {
             @Override
             public void onSuccess(List<HomeCateList> homeCateListList) {
