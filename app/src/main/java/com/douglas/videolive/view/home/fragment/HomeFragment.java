@@ -1,8 +1,7 @@
-package com.douglas.videolive.view.home;
+package com.douglas.videolive.view.home.fragment;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Size;
 import android.widget.ImageView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
@@ -13,8 +12,10 @@ import com.douglas.videolive.model.home.HomeCateListModelLogic;
 import com.douglas.videolive.model.home.bean.HomeCateList;
 import com.douglas.videolive.presenter.home.HomeCateListContract;
 import com.douglas.videolive.presenter.home.impl.HomeCateListPresenterImp;
+import com.douglas.videolive.view.home.adapter.HomeAllListAdapter;
 import com.flyco.tablayout.SlidingTabLayout;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,6 +44,7 @@ public class HomeFragment extends BaseFragment<HomeCateListModelLogic, HomeCateL
     @BindView(R.id.viewpager)
     ViewPager viewPager;
     private String[] mTitles;
+    private HomeAllListAdapter mAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -103,6 +105,6 @@ public class HomeFragment extends BaseFragment<HomeCateListModelLogic, HomeCateL
         }
         //不销毁fragment
         viewPager.setOffscreenPageLimit(mTitles.length);
-        new homeAll
+        mAdapter = new HomeAllListAdapter();
     }
 }
