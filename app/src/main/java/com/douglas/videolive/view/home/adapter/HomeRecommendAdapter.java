@@ -11,6 +11,7 @@ import com.douglas.videolive.model.home.bean.HomeRecommendHotCate;
 import com.douglas.videolive.ui.refreshview.recyclerview.BaseRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by shidongfang on 2017/12/19.
@@ -24,14 +25,50 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<RecyclerView.ViewH
     private final ArrayList<HomeRecommendHotCate> mHomeRecommendHotCate;
     private final HomeRecommendFaceScoreColumnAdapter mFaceScoreColumnAdapter;
     private final Context context;
+    private final ArrayList<HomeFaceScoreColumn> mHomeFaceScoreColumn;
+    private final ArrayList<HomeHotColumn> mHomeHotColumn;
 
     public HomeRecommendAdapter(Context context) {
         this.context = context;
-        ArrayList<HomeHotColumn> mHomeHotColumn = new ArrayList<HomeHotColumn>();
-        ArrayList<HomeFaceScoreColumn> mHomeFaceScoreColumn = new ArrayList<HomeFaceScoreColumn>();
+        mHomeHotColumn = new ArrayList<HomeHotColumn>();
+        mHomeFaceScoreColumn = new ArrayList<HomeFaceScoreColumn>();
         mHomeRecommendHotCate = new ArrayList<HomeRecommendHotCate>();
         mFaceScoreColumnAdapter = new HomeRecommendFaceScoreColumnAdapter(context);
 
+    }
+
+
+    /**
+     * 最热栏目
+     *
+     * @param homeHotColumn
+     */
+    public void getHomeHotColumn(List<HomeHotColumn> homeHotColumn) {
+        this.mHomeHotColumn.clear();
+        this.mHomeHotColumn.addAll(mHomeHotColumn);
+        notifyDataSetChanged();
+
+    }
+
+    /**
+     * 颜值
+     *
+     * @param homeFaceScoreColumn
+     */
+    public void getFaceScoreColumn(List<HomeFaceScoreColumn> homeFaceScoreColumn) {
+        this.mHomeFaceScoreColumn.clear();
+        this.mHomeFaceScoreColumn.addAll(mHomeFaceScoreColumn);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * 全部栏目
+     * @param homeRecommendHotCates
+     */
+    public void getAllColumn(List<HomeRecommendHotCate> homeRecommendHotCates) {
+        this.mHomeRecommendHotCate.clear();
+        this.mHomeRecommendHotCate.addAll(homeRecommendHotCates);
+        notifyDataSetChanged();
     }
 
     @Override
