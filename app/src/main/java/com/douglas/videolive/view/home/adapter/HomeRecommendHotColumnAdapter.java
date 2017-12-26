@@ -18,6 +18,7 @@ import com.douglas.videolive.R;
 import com.douglas.videolive.model.home.bean.HomeHotColumn;
 import com.douglas.videolive.utils.CalculationUtils;
 import com.douglas.videolive.view.common.activity.PcLiveVideoActivity;
+import com.douglas.videolive.view.common.activity.PhoneLiveVideoActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 
@@ -65,12 +66,12 @@ public class HomeRecommendHotColumnAdapter extends RecyclerView.Adapter<Recycler
                 {
                     // TODO 跳转到手机直播视频页
                     Toast.makeText(context,"手机视频",Toast.LENGTH_LONG);
-//                    Intent intent = new Intent(context, PhoneLiveVideoActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("Room_id",mHomeHotColumn.get(position).getRoom_id());
-//                    bundle.putString("Img_Path", mHomeHotColumn.get(position).getVertical_src());
-//                    intent.putExtras(bundle);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, PhoneLiveVideoActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("Room_id",mHomeHotColumn.get(position).getRoom_id());
+                    bundle.putString("Img_Path", mHomeHotColumn.get(position).getVertical_src());
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }else {
                     Intent intent = new Intent(context, PcLiveVideoActivity.class);
                     Bundle bundle = new Bundle();
