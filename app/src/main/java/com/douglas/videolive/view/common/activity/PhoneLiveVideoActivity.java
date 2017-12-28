@@ -48,8 +48,9 @@ import master.flame.danmaku.ui.widget.DanmakuView;
  * Created by shidongfang on 2017/12/25.
  */
 
-public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoModelLogic, CommonPhoneLiveVideoPresenterImp>
-        implements CommonPhoneLiveVideoContract.View, MediaPlayer.OnInfoListener,
+public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoModelLogic,
+        CommonPhoneLiveVideoPresenterImp> implements
+        CommonPhoneLiveVideoContract.View, MediaPlayer.OnInfoListener,
         MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnErrorListener {
 
     @BindView(R.id.vm_videoview)
@@ -69,7 +70,7 @@ public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoMod
     @BindView(R.id.control_center)
     RelativeLayout controlCenter;
     @BindView(R.id.tv_loading_buffer)
-    TextView tvLKoadingBuffer;
+    TextView tvLoadingBuffer;
     @BindView(R.id.danmakuView)
     DanmakuView danmakuView;
     @BindView(R.id.img_loading)
@@ -83,6 +84,8 @@ public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoMod
     private DanmuProcess mDanmuProcess;
     private ArrayList<Bitmap> mList;//点赞的动画
     private int mIndex = 0;
+    private TempLiveVideoInfo mVideoInfo;
+
     /*声音*/
     public final static int ADD_FLAG = 1;
     /*亮度*/
@@ -248,7 +251,11 @@ public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoMod
 
     @Override
     protected void onEvent() {
-        addTouchListener();
+        addTouchListener();//手势监听
+        /*视频播放监听*/
+        vmVideoView.setOnInfoListener(this);
+        vmVideoView.setOnBufferingUpdateListener(this);
+        vmVideoView.setOnErrorListener(this);
     }
 
     private void addTouchListener() {
@@ -267,27 +274,40 @@ public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoMod
                     if (distanceY > 0) {//向上滑动
                         if (x1 >= mScreenWidth * 0.65) {//右侧调节音量
                             changeVolume(ADD_FLAG);
-                        }else {//调节亮度
+                        } else {//调节亮度
                             changeLightness(ADD_FLAG);
                         }
-                    }else {//向下滑动
-                        if (x1>=mScreenWidth *0.65){
+                    } else {//向下滑动
+                        if (x1 >= mScreenWidth * 0.65) {
                             changeVolume(SUB_FLAG);
-                        }else {
+                        } else {
                             changeLightness(SUB_FLAG);
                         }
                     }
-                }else {//x方向的距离比Y方向的大
+                } else {//x方向的距离比Y方向的大
 
                 }
                 return false;
             }
             //双击事件，有的视频播放器支持双击暂停，在这实现
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return super.onDoubleTap(e);
+            }
+            //单击事件
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                return true;
+            }
         };
+        mGestureDetector = new GestureDetector(this, mSimpleOnGestureListener);
     }
 
     /**
      * 调节亮度
+     *
      * @param addFlag
      */
     private void changeLightness(int addFlag) {
@@ -342,31 +362,144 @@ public class PhoneLiveVideoActivity extends BaseActivity<CommonPhoneLiveVideoMod
 
     @Override
     protected BaseView getView() {
-        return null;
-    }
-
-    @Override
-    public void showErrorWithStatus(String msg) {
-
+        return this;
     }
 
     @Override
     public void getViewPhoneLiveVideoInfo(TempLiveVideoInfo mLiveVideoInfo) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mVideoInfo = mLiveVideoInfo;
+                getViewInfo(mLiveVideoInfo);
+            }
+        });
+    }
 
+    private void getViewInfo(TempLiveVideoInfo liveVideoInfo) {
+        if (liveVideoInfo != null) {
+            String url = liveVideoInfo.getData().getHls_url();
+            Uri uri = Uri.parse(url);
+            if (vmVideoView != null) {
+                vmVideoView.setVideoURI(uri);
+                vmVideoView.setBufferSize(1024 * 1024 * 20);
+                vmVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
+                vmVideoView.requestFocus();
+                vmVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        mp.setPlaybackSpeed(1.0f);
+                        flLoading.setVisibility(View.GONE);
+                        mHandler.sendEmptyMessageDelayed(HIDE_CONTROL_BAR, HIDE_TIME);
+                    }
+                });
+            }
+        }
     }
 
     @Override
-    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+    public void showErrorWithStatus(String msg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                svProgressHUD.showErrorWithStatus("主播还在赶来的路上~~~");
+            }
+        });
+    }
 
+    /**
+     * 正在缓冲
+     *
+     * @param mp      the MediaPlayer the update pertains to
+     * @param percent the percentage (0-100) of the buffer that has been filled thus
+     */
+    @Override
+    public void onBufferingUpdate(MediaPlayer mp, int percent) {
+        if (flLoading != null) {
+            flLoading.setVisibility(View.VISIBLE);
+        }
+        if (vmVideoView != null) {
+            if (vmVideoView.isPlaying())
+                vmVideoView.pause();
+            if (tvLoadingBuffer != null) {
+                tvLoadingBuffer.setText("直播已缓冲" + percent + "%....");
+            }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mPresenter.getPresenterPhoneLiveVideoInfo(room_id);
+        if (vmVideoView != null) {
+            vmVideoView.start();
+        }
+        if (danmakuView != null && mDanmuProcess != null) {
+            danmakuView.restart();
+            mDanmuProcess.start();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (vmVideoView != null) {
+            vmVideoView.pause();
+        }
+        if (danmakuView != null) {
+            danmakuView.pause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (vmVideoView != null) {
+            vmVideoView.stopPlayback();//释放资源
+        }
+        if (divergeView != null) {
+            divergeView.stop();//销毁点赞动画
+            divergeView= null;
+        }
+        mDanmuProcess.finish();
+        mDanmuProcess.close();
+        if (danmakuView != null) {
+            danmakuView.release();
+            danmakuView.clear();
+        }
+        super.onDestroy();
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+        if (what==MediaPlayer.MEDIA_ERROR_UNKNOWN){
+            svProgressHUD.showErrorWithStatus("主播还在赶来的路上---");
+        }
         return false;
     }
 
     @Override
     public boolean onInfo(MediaPlayer mp, int what, int extra) {
-        return false;
+        switch(what){
+            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                if (vmVideoView.isPlaying()) {
+                    vmVideoView.pause();
+                }
+                mHandler.removeMessages(HIDE_CONTROL_BAR);
+                break;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                flLoading.setVisibility(View.GONE);
+                if (!vmVideoView.isPlaying())
+                    vmVideoView.start();
+                mHandler.sendEmptyMessageDelayed(HIDE_CONTROL_BAR,HIDE_TIME);
+                break;
+            case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
+                break;
+        }
+        return true;
     }
 }

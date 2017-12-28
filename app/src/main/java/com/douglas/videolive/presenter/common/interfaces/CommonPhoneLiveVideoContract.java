@@ -22,9 +22,9 @@ import okhttp3.Request;
  **/
 public interface CommonPhoneLiveVideoContract {
 
-      interface View extends BaseView {
-           void getViewPhoneLiveVideoInfo(TempLiveVideoInfo mLiveVideoInfo);
-      }
+    interface View extends BaseView {
+        void getViewPhoneLiveVideoInfo(TempLiveVideoInfo mLiveVideoInfo);
+    }
     interface  Model extends BaseModel {
         Request getModelPhoneLiveVideoInfo(Context context, String room_id);
     }

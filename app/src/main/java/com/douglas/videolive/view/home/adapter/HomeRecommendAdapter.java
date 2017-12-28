@@ -139,12 +139,12 @@ public class HomeRecommendAdapter extends BaseRecyclerAdapter<RecyclerView.ViewH
             @Override
             public void onClick(View view) {
                 //TODO  HomeColumnMoreListActivity
-//                Intent intent = new Intent(context, HomeColumnMoreListActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("title", holder.tv_column_name.getText().toString());
-//                bundle.putString("cate_id", mHomeRecommendHotCate.get(position - 2).getTag_id());
-//                intent.putExtras(bundle);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, HomeColumnMoreListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", holder.tv_column_name.getText().toString());
+                bundle.putString("cate_id", mHomeRecommendHotCate.get(position - 2).getTag_id());
+                intent.putExtras(bundle);
+                context.startActivity(intent);
             }
         });
     }
