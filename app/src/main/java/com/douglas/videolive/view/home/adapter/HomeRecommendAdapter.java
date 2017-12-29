@@ -18,6 +18,7 @@ import com.douglas.videolive.model.home.bean.HomeFaceScoreColumn;
 import com.douglas.videolive.model.home.bean.HomeHotColumn;
 import com.douglas.videolive.model.home.bean.HomeRecommendHotCate;
 import com.douglas.videolive.ui.refreshview.recyclerview.BaseRecyclerAdapter;
+import com.douglas.videolive.view.home.activity.HomeColumnMoreListActivity;
 
 import java.util.ArrayList;
 import java.util.List;

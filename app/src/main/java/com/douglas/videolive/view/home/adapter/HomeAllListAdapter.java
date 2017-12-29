@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.douglas.videolive.model.home.bean.HomeCateList;
+import com.douglas.videolive.view.home.fragment.OtherHomeFragment;
+import com.douglas.videolive.view.home.fragment.RecommendHomeFragment;
 
 import java.util.List;
 
@@ -29,8 +31,9 @@ public class HomeAllListAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position != 0) {
-            return RecommendHomeFragment
+            return RecommendHomeFragment.getInstance();
         }
+        OtherHomeFragment
         return null;
     }
 

@@ -93,7 +93,7 @@ public class HomeFragment extends BaseFragment<HomeCateListModelLogic, HomeCateL
 
     @Override
     public void showErrorWithStatus(String msg) {
-
+        svProgressHUD.showErrorWithStatus(msg);
     }
 
     @Override
@@ -105,6 +105,9 @@ public class HomeFragment extends BaseFragment<HomeCateListModelLogic, HomeCateL
         }
         //不销毁fragment
         viewPager.setOffscreenPageLimit(mTitles.length);
-        mAdapter = new HomeAllListAdapter();
+        mAdapter = new HomeAllListAdapter(getChildFragmentManager(),cateLists,mTitles);
+        viewPager.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        slidingTab.setViewPager(viewPager,mTitles);
     }
 }
