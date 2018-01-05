@@ -27,7 +27,7 @@ import com.douglas.videolive.R;
 import com.douglas.videolive.base.BaseActivity;
 import com.douglas.videolive.base.BaseView;
 import com.douglas.videolive.danmu.DanmuProcess;
-import com.douglas.videolive.model.logic.bean.TempLiveVideoInfo;
+import com.douglas.videolive.model.logic.common.bean.TempLiveVideoInfo;
 import com.douglas.videolive.model.logic.common.CommonPhoneLiveVideoModelLogic;
 import com.douglas.videolive.presenter.common.impl.CommonPhoneLiveVideoPresenterImp;
 import com.douglas.videolive.presenter.common.interfaces.CommonPhoneLiveVideoContract;

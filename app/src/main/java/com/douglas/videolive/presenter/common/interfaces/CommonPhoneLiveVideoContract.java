@@ -7,7 +7,7 @@ import android.content.Context;
 import com.douglas.videolive.base.BaseModel;
 import com.douglas.videolive.base.BasePresenter;
 import com.douglas.videolive.base.BaseView;
-import com.douglas.videolive.model.logic.bean.TempLiveVideoInfo;
+import com.douglas.videolive.model.logic.common.bean.TempLiveVideoInfo;
 
 import okhttp3.Request;
 

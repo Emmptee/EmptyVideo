@@ -1,12 +1,13 @@
 package com.douglas.videolive.api.video;
 
-import com.team.zhuoke.model.logic.video.bean.VideoCateList;
-import com.team.zhuoke.model.logic.video.bean.VideoHotAuthorColumn;
-import com.team.zhuoke.model.logic.video.bean.VideoHotColumn;
-import com.team.zhuoke.model.logic.video.bean.VideoOtherColumnList;
-import com.team.zhuoke.model.logic.video.bean.VideoReClassify;
-import com.team.zhuoke.model.logic.video.bean.VideoRecommendHotCate;
-import com.team.zhuoke.net.response.HttpResponse;
+
+import com.douglas.videolive.model.logic.video.bean.VideoCateList;
+import com.douglas.videolive.model.logic.video.bean.VideoHotAuthorColumn;
+import com.douglas.videolive.model.logic.video.bean.VideoHotColumn;
+import com.douglas.videolive.model.logic.video.bean.VideoOtherColumnList;
+import com.douglas.videolive.model.logic.video.bean.VideoReClassify;
+import com.douglas.videolive.model.logic.video.bean.VideoRecommendHotCate;
+import com.douglas.videolive.net.response.HttpResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -15,14 +16,12 @@ import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 
-import static com.team.zhuoke.api.NetWorkApi.getVideoCateList;
-import static com.team.zhuoke.api.NetWorkApi.getVideoHotAutherColumn;
-import static com.team.zhuoke.api.NetWorkApi.getVideoHotColumn;
-import static com.team.zhuoke.api.NetWorkApi.getVideoOtherList;
-import static com.team.zhuoke.api.NetWorkApi.getVideoReCateList;
-import static com.team.zhuoke.api.NetWorkApi.getVideoRecommendHotCate;
-
-
+import static com.douglas.videolive.api.NetWorkApi.getVideoCateList;
+import static com.douglas.videolive.api.NetWorkApi.getVideoHotAutherColumn;
+import static com.douglas.videolive.api.NetWorkApi.getVideoHotColumn;
+import static com.douglas.videolive.api.NetWorkApi.getVideoOtherList;
+import static com.douglas.videolive.api.NetWorkApi.getVideoReCateList;
+import static com.douglas.videolive.api.NetWorkApi.getVideoRecommendHotCate;
 /**
  * Created by Administrator on 2017/2/7 0007.
  */

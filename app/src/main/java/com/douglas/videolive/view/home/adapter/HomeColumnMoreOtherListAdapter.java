@@ -20,11 +20,18 @@ import com.douglas.videolive.view.common.activity.PcLiveVideoActivity;
 import com.douglas.videolive.view.common.activity.PhoneLiveVideoActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-
+ * 作者：gaoyin
+ * 电话：18810474975
+ * 邮箱：18810474975@163.com
+ * 版本号：1.0
+ * 类描述：
+ * 备注消息：
+ * 修改时间：2017/2/7 下午6:17
  **/
 public class HomeColumnMoreOtherListAdapter extends BaseRecyclerAdapter<RecyclerView.ViewHolder> {
 
@@ -90,7 +97,7 @@ public class HomeColumnMoreOtherListAdapter extends BaseRecyclerAdapter<Recycler
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 } else if (mLiveList.get(position).getCate_id() == 207) {
-                    //TODO
+                    //TODO WEBVIEW
 //                    Intent intent = new Intent(context, WebViewActivity.class);
 //                    intent.putExtra("web_url", mLiveList.get(position).getJumpUrl()+"?from=dy");
 //                    context.startActivity(intent);

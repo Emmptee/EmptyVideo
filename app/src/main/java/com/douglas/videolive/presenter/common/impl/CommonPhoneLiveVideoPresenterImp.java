@@ -3,7 +3,7 @@ package com.douglas.videolive.presenter.common.impl;
 
 import android.util.Log;
 
-import com.douglas.videolive.model.logic.bean.TempLiveVideoInfo;
+import com.douglas.videolive.model.logic.common.bean.TempLiveVideoInfo;
 import com.douglas.videolive.presenter.common.interfaces.CommonPhoneLiveVideoContract;
 import com.google.gson.Gson;
 import com.douglas.videolive.utils.L;

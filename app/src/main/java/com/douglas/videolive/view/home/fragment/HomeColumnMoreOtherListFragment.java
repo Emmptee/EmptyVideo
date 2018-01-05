@@ -16,7 +16,6 @@ import com.douglas.videolive.presenter.home.interfaces.HomeColumnMoreOtherListCo
 import com.douglas.videolive.ui.refreshview.XRefreshView;
 import com.douglas.videolive.view.home.adapter.HomeColumnMoreOtherListAdapter;
 
-
 import java.util.List;
 
 import butterknife.BindView;

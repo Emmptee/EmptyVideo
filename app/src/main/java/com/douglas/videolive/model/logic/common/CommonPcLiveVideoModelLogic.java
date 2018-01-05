@@ -1,4 +1,4 @@
-package com.douglas.videolive.model.logic;
+package com.douglas.videolive.model.logic.common;
 
 import android.content.Context;
 

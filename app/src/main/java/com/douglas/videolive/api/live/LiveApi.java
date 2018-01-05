@@ -1,11 +1,12 @@
 package com.douglas.videolive.api.live;
 
-import com.team.zhuoke.model.logic.live.bean.LiveAllList;
-import com.team.zhuoke.model.logic.live.bean.LiveOtherColumn;
-import com.team.zhuoke.model.logic.live.bean.LiveOtherList;
-import com.team.zhuoke.model.logic.live.bean.LiveOtherTwoColumn;
-import com.team.zhuoke.model.logic.live.bean.LiveSportsAllList;
-import com.team.zhuoke.net.response.HttpResponse;
+
+import com.douglas.videolive.model.logic.live.LiveOtherColumn;
+import com.douglas.videolive.model.logic.live.bean.LiveAllList;
+import com.douglas.videolive.model.logic.live.bean.LiveOtherList;
+import com.douglas.videolive.model.logic.live.bean.LiveOtherTwoColumn;
+import com.douglas.videolive.model.logic.live.bean.LiveSportsAllList;
+import com.douglas.videolive.net.response.HttpResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -14,21 +15,13 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import rx.Observable;
-
-import static com.team.zhuoke.api.NetWorkApi.getLiveAllList;
-import static com.team.zhuoke.api.NetWorkApi.getLiveOtherColumn;
-import static com.team.zhuoke.api.NetWorkApi.getLiveOtherTwoColumn;
-import static com.team.zhuoke.api.NetWorkApi.getLiveOtherTwoList;
-import static com.team.zhuoke.api.NetWorkApi.getLiveSportsAllList;
+import static com.douglas.videolive.api.NetWorkApi.getLiveAllList;
+import static com.douglas.videolive.api.NetWorkApi.getLiveOtherColumn;
+import static com.douglas.videolive.api.NetWorkApi.getLiveOtherTwoColumn;
+import static com.douglas.videolive.api.NetWorkApi.getLiveOtherTwoList;
+import static com.douglas.videolive.api.NetWorkApi.getLiveSportsAllList;
 
 /**
- *  作者：gaoyin
- *  电话：18810474975
- *  邮箱：18810474975@163.com
- *  版本号：1.0
- *  类描述：
- *  备注消息：
- *  修改时间：2017/2/7 下午3:57
  **/
 public interface LiveApi {
     /**

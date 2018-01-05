@@ -64,7 +64,6 @@ public class HomeRecommendAllColumnAdapter extends RecyclerView.Adapter<Recycler
 //                颜值栏目 竖屏播放
                 if(mRommListEntity.get(position).getCate_id().equals("201"))
                 {
-                    // TODO 直播视频
                     Intent intent = new Intent(context, PhoneLiveVideoActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("Room_id",mRommListEntity.get(position).getRoom_id());

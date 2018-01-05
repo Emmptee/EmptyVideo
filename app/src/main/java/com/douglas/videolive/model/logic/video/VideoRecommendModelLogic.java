@@ -1,0 +1,57 @@
+package com.douglas.videolive.model.logic.video;
+
+import android.content.Context;
+
+
+import com.douglas.videolive.api.video.VideoApi;
+import com.douglas.videolive.model.ParamsMapUtils;
+import com.douglas.videolive.model.logic.video.bean.VideoHotAuthorColumn;
+import com.douglas.videolive.model.logic.video.bean.VideoHotColumn;
+import com.douglas.videolive.model.logic.video.bean.VideoRecommendHotCate;
+import com.douglas.videolive.net.http.HttpUtils;
+import com.douglas.videolive.net.transformer.DefaultTransformer;
+import com.douglas.videolive.presenter.video.interfaces.VideoRerecommendContract;
+
+import java.util.List;
+
+import rx.Observable;
+
+/**
+ * Created by Administrator on 2017/2/7 0007.
+ */
+
+public class VideoRecommendModelLogic implements VideoRerecommendContract.Model {
+    @Override
+    public Observable<List<VideoHotColumn>> getModelVideoHotColumn(Context context) {
+        return HttpUtils.getInstance(context)
+                .getRetofitClinet()
+                .setBaseUrl(" http://apiv2.douyucdn.cn")
+                .builder(VideoApi.class)
+                .getVideoHotColumn(ParamsMapUtils.getDefaultParams())
+//               进行预处理
+                .compose(new DefaultTransformer<List<VideoHotColumn>>());
+
+    }
+
+    @Override
+    public Observable<List<VideoHotAuthorColumn>> getModelVideoHotAuthorColumn(Context context, int offset, int limit) {
+        return HttpUtils.getInstance(context)
+                .getRetofitClinet()
+                .setBaseUrl(" http://apiv2.douyucdn.cn")
+                .builder(VideoApi.class)
+                .getVideoHotAuther(ParamsMapUtils.getDefaultParams())
+//               进行预处理
+                .compose(new DefaultTransformer<List<VideoHotAuthorColumn>>());
+    }
+
+    @Override
+    public Observable<List<VideoRecommendHotCate>> getModelVideoHotCate(Context context) {
+        return HttpUtils.getInstance(context)
+                .getRetofitClinet()
+                .setBaseUrl(" http://apiv2.douyucdn.cn")
+                .builder(VideoApi.class)
+                .getVideoHotCate(ParamsMapUtils.getDefaultParams())
+//               进行预处理
+                .compose(new DefaultTransformer<List<VideoRecommendHotCate>>());
+    }
+}

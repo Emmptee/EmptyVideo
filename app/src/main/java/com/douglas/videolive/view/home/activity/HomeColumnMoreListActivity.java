@@ -12,11 +12,12 @@ import com.douglas.videolive.R;
 import com.douglas.videolive.base.BaseView;
 import com.douglas.videolive.base.SwipeBackActivity;
 import com.douglas.videolive.model.home.bean.HomeColumnMoreTwoCate;
-import com.douglas.videolive.model.logic.home.HomeColumnMoreModeLogic;
+import com.douglas.videolive.model.logic.home.HomeColumnMoreModelLogic;
 import com.douglas.videolive.presenter.home.impl.HomeColumnMorePresenterImp;
 import com.douglas.videolive.presenter.home.interfaces.HomeColumnMoreListContract;
 import com.douglas.videolive.view.home.adapter.HomeColumnMoreTwoCateAdapter;
 import com.flyco.tablayout.SlidingTabLayout;
+
 
 import java.util.List;
 
@@ -24,11 +25,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * Created by shidongfang on 2017/12/29.
- */
+更多栏目列表
+ **/
+public class HomeColumnMoreListActivity extends SwipeBackActivity<HomeColumnMoreModelLogic,
+        HomeColumnMorePresenterImp> implements
+        HomeColumnMoreListContract.View {
 
-public class HomeColumnMoreListActivity extends SwipeBackActivity<HomeColumnMoreModeLogic,HomeColumnMorePresenterImp>
-    implements HomeColumnMoreListContract.View{
 
     @BindView(R.id.img_back)
     ImageView imgBack;

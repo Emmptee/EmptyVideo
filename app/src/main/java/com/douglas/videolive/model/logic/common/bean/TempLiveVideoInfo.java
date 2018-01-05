@@ -1,4 +1,4 @@
-package com.douglas.videolive.model.logic.bean;
+package com.douglas.videolive.model.logic.common.bean;
 
 /**
  * 作者：${User}

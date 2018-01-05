@@ -20,9 +20,9 @@ import com.douglas.videolive.view.common.activity.PcLiveVideoActivity;
 import com.douglas.videolive.view.common.activity.PhoneLiveVideoActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * 作者：gaoyin
@@ -97,7 +97,7 @@ public class HomeColumnMoreAllListAdapter extends BaseRecyclerAdapter<RecyclerVi
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 } else if (mLiveList.get(position).getCate_id() == 207) {
-                    //TODO
+                    //TODO WebViewActivity
 //                    Intent intent = new Intent(context, WebViewActivity.class);
 //                    intent.putExtra("web_url", mLiveList.get(position).getJumpUrl()+"?from=dy");
 //                    context.startActivity(intent);

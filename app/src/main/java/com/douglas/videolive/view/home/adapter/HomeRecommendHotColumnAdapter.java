@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.douglas.videolive.R;
@@ -20,7 +19,6 @@ import com.douglas.videolive.utils.CalculationUtils;
 import com.douglas.videolive.view.common.activity.PcLiveVideoActivity;
 import com.douglas.videolive.view.common.activity.PhoneLiveVideoActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
-
 
 import java.util.List;
 
@@ -64,8 +62,6 @@ public class HomeRecommendHotColumnAdapter extends RecyclerView.Adapter<Recycler
                 //                颜值栏目 竖屏播放
                 if(mHomeHotColumn.get(position).getCate_id().equals("201"))
                 {
-                    // TODO 跳转到手机直播视频页
-                    Toast.makeText(context,"手机视频",Toast.LENGTH_LONG);
                     Intent intent = new Intent(context, PhoneLiveVideoActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("Room_id",mHomeHotColumn.get(position).getRoom_id());

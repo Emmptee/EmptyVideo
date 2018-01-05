@@ -5,11 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <com.douglas.videolive.ui.refreshview.XRefreshView
-        android:id="@+id/refresh_content"
+        android:id="@+id/rtefresh_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" >
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recommond_content_recyclerview"
+            android:id="@+id/recommend_content_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </android.support.v7.widget.RecyclerView>

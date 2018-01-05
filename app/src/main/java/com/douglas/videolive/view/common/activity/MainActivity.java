@@ -12,7 +12,7 @@ import com.douglas.videolive.base.BaseView;
 import com.douglas.videolive.ui.NavigateTabBar;
 import com.douglas.videolive.view.follow.FollowFragment;
 import com.douglas.videolive.view.home.fragment.HomeFragment;
-import com.douglas.videolive.view.live.LiveFragment;
+import com.douglas.videolive.view.live.fragment.LiveFragment;
 import com.douglas.videolive.view.user.UserFragment;
 import com.douglas.videolive.view.video.VideoFragment;
 

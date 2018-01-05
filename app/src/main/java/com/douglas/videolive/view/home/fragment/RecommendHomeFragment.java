@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.TextView;
 
 import com.bigkoo.svprogresshud.SVProgressHUD;
 import com.douglas.videolive.R;
@@ -16,7 +15,7 @@ import com.douglas.videolive.model.home.bean.HomeCarousel;
 import com.douglas.videolive.model.home.bean.HomeFaceScoreColumn;
 import com.douglas.videolive.model.home.bean.HomeHotColumn;
 import com.douglas.videolive.model.home.bean.HomeRecommendHotCate;
-import com.douglas.videolive.model.logic.home.HomeRecommondModelLogic;
+import com.douglas.videolive.model.logic.home.HomeRecommendModelLogic;
 import com.douglas.videolive.presenter.home.impl.HomeRecommendPresenterImp;
 import com.douglas.videolive.presenter.home.interfaces.HomeRecommendContract;
 import com.douglas.videolive.ui.refreshview.XRefreshView;
@@ -31,23 +30,28 @@ import java.util.List;
 import butterknife.BindView;
 import cn.bingoogolapple.bgabanner.BGABanner;
 
-/**
- * Created by shidongfang on 2017/12/13.
- * 推荐页
- */
 
-public class RecommendHomeFragment extends BaseFragment<HomeRecommondModelLogic, HomeRecommendPresenterImp>
-                        implements HomeRecommendContract.View,BGABanner.Delegate<SimpleDraweeView,String>{
+/**
+ * 作者：gaoyin
+ * 电话：18810474975
+ * 邮箱：18810474975@163.com
+ * 版本号：1.0
+ * 类描述：  推荐页
+ * 备注消息：
+ * 修改时间：2016/12/15 下午4:01
+ **/
+public class RecommendHomeFragment extends BaseFragment<HomeRecommendModelLogic, HomeRecommendPresenterImp>
+        implements HomeRecommendContract.View, BGABanner.Delegate<SimpleDraweeView, String> {
     SVProgressHUD svProgressHUD;
-    @BindView(R.id.refresh_content)
-    XRefreshView refreshContent;
-    @BindView(R.id.recommond_content_recyclerview)
-    RecyclerView recommend_recyclerView;
-    private HomeRecommendAdapter mAdapter;
+    @BindView(R.id.rtefresh_content)
+    XRefreshView rtefreshContent;
+    @BindView(R.id.recommend_content_recyclerview)
+    RecyclerView recommed_recyclerview;
+    private HomeRecommendAdapter adapter;
+    private HomeCarouselAdapter mRecommedBannerAdapter;
+    private BGABanner recommed_banner;
+    private View haderView;
     private List<HomeCarousel> mHomeCarousel;
-    private HomeCarouselAdapter mRecommendBannerAdapter;
-    private View headerView;
-    private BGABanner recommend_banner;
 
     public static RecommendHomeFragment getInstance() {
         RecommendHomeFragment rf = new RecommendHomeFragment();
@@ -62,31 +66,20 @@ public class RecommendHomeFragment extends BaseFragment<HomeRecommondModelLogic,
     @Override
     protected void onInitView(Bundle bundle) {
         svProgressHUD = new SVProgressHUD(getActivity());
-        recommend_recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new HomeRecommendAdapter(getContext());
-        mHomeCarousel = new ArrayList<HomeCarousel>();
-        pool.setMaxRecycledViews(mAdapter.getAdapterItemViewType(0),500);
-        recommend_recyclerView.setRecycledViewPool(pool);
-        recommend_recyclerView.setAdapter(mAdapter);
-        mRecommendBannerAdapter = new HomeCarouselAdapter();
-        headerView = mAdapter.setHeaderView(R.layout.item_home_recommend_banner, recommend_recyclerView);
-        recommend_banner = (BGABanner) headerView.findViewById(R.id.recommed_banner);
-        recommend_banner.setDelegate(this);
-        recommend_banner.setAdapter(mRecommendBannerAdapter);
-        setXrefreshViewConfig();
+        recommed_recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new HomeRecommendAdapter(getContext());
+        mHomeCarousel=new ArrayList<HomeCarousel>();
+        pool.setMaxRecycledViews(adapter.getItemViewType(0), 500);
+        recommed_recyclerview.setRecycledViewPool(pool);
+        recommed_recyclerview.setAdapter(adapter);
+        mRecommedBannerAdapter = new HomeCarouselAdapter();
+        haderView = adapter.setHeaderView(
+                R.layout.item_home_recommend_banner, recommed_recyclerview);
+        recommed_banner=(BGABanner) haderView.findViewById(R.id.recommed_banner);
+        recommed_banner.setDelegate(this);
+        recommed_banner.setAdapter(mRecommedBannerAdapter);
+        setXrefeshViewConfig();
     }
-
-    /**
-     * 配置xRefreshViewConfig
-     */
-    private void setXrefreshViewConfig() {
-        refreshContent.setPinnedTime(2000);
-        refreshContent.setPinnedContent(true);
-        refreshContent.setPullLoadEnable(false);
-        refreshContent.setPullRefreshEnable(true);
-        refreshContent.setMoveForHorizontal(true);
-    }
-
     final RecyclerView.RecycledViewPool pool = new RecyclerView.RecycledViewPool() {
         @Override
         public void putRecycledView(RecyclerView.ViewHolder scrap) {
@@ -100,34 +93,93 @@ public class RecommendHomeFragment extends BaseFragment<HomeRecommondModelLogic,
         }
     };
 
+    /**
+     * 配置XRefreshView
+     */
+    protected void setXrefeshViewConfig() {
+        rtefreshContent.setPinnedTime(2000);
+        rtefreshContent.setPullLoadEnable(false);
+        rtefreshContent.setPullRefreshEnable(true);
+        rtefreshContent.setMoveForHorizontal(true);
+        rtefreshContent.setPinnedContent(true);
+    }
+
     @Override
     protected void onEvent() {
-        refreshContent.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+        rtefreshContent.setXRefreshViewListener(
+                new XRefreshView.SimpleXRefreshListener() {
             @Override
             public void onRefresh() {
+//                延迟500毫秒, 原因 用户体验好 !!!
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         refresh();
                     }
-                },500);
+                }, 500);
             }
         });
-    }
-
-    /**
-     * 刷新网络数据
-     */
-    private void refresh() {
-        mPresenter.getPresenterCarousel();
-        mPresenter.getPresenterHotColumn();
-        mPresenter.getPresenterFaceScoreColumn(0,4);
-        mPresenter.getPresenterHotCate();
     }
 
     @Override
     protected BaseView getViewImp() {
         return this;
+    }
+
+    /**
+     * 轮播图
+     *
+     * @param mHomeCarousel
+     */
+    @Override
+    public void getViewCarousel(List<HomeCarousel> mHomeCarousel) {
+        if (rtefreshContent != null) {
+            rtefreshContent.stopRefresh();
+        }
+        this.mHomeCarousel.clear();
+        this.mHomeCarousel.addAll(mHomeCarousel);
+//        recommed_banner.setDelegate(this);
+        ArrayList<String> pic_url = new ArrayList<String>();
+        for (int i = 0; i < mHomeCarousel.size(); i++) {
+            pic_url.add(mHomeCarousel.get(i).getPic_url());
+        }
+        if (recommed_banner != null && pic_url.size() > 0) {
+
+            recommed_banner.setData(R.layout.item_image_carousel, pic_url, null);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    //最热
+    @Override
+    public void getViewHotColumn(List<HomeHotColumn> mHomeHotColumn) {
+        adapter.getHomeHotColumn(mHomeHotColumn);
+    }
+
+    //颜值
+    @Override
+    public void getViewFaceScoreColumn(List<HomeFaceScoreColumn> homeFaceScoreColumns) {
+        adapter.getFaceScoreColmun(homeFaceScoreColumns);
+    }
+
+    //热门
+    @Override
+    public void getViewHotcate(List<HomeRecommendHotCate> homeRecommendHotCates) {
+        //        去掉颜值栏目
+        homeRecommendHotCates.remove(1);
+        adapter.getAllColumn(homeRecommendHotCates);
+    }
+
+
+    /**
+     * 刷新网络数据
+     */
+    private void refresh() {
+//        轮播图
+        mPresenter.getPresenterCarousel();
+        mPresenter.getPresenterHotColumn();
+        mPresenter.getPresenterFaceScoreColumn(0, 4);
+        mPresenter.getPresenterHotCate();
     }
 
     @Override
@@ -136,66 +188,17 @@ public class RecommendHomeFragment extends BaseFragment<HomeRecommondModelLogic,
     }
 
     @Override
+    public void showErrorWithStatus(String msg) {
+        svProgressHUD.showErrorWithStatus(msg);
+        rtefreshContent.stopRefresh(false);
+    }
+
+    @Override
     public void onBannerItemClick(BGABanner banner, SimpleDraweeView itemView, String model, int position) {
         Intent intent = new Intent(getActivity(), PcLiveVideoActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("romm_id",mHomeCarousel.get(position).getRoom().getRoom_id());
+        bundle.putString("Room_id",mHomeCarousel.get(position).getRoom().getRoom_id());
         intent.putExtras(bundle);
         getActivity().startActivity(intent);
-    }
-
-    @Override
-    public void showErrorWithStatus(String msg) {
-        svProgressHUD.showErrorWithStatus(msg);
-        refreshContent.stopRefresh(false);
-    }
-
-    /**
-     * 轮播图
-     * @param homeCarousel
-     */
-    @Override
-    public void getViewCarousel(List<HomeCarousel> homeCarousel) {
-        if (refreshContent != null) {
-            refreshContent.stopRefresh();
-        }
-        this.mHomeCarousel.clear();
-        this.mHomeCarousel.addAll(mHomeCarousel);
-        ArrayList<String> pic_url = new ArrayList<>();
-        for (int i = 0; i < mHomeCarousel.size(); i++) {
-            pic_url.add(homeCarousel.get(i).getPic_url());
-        }
-        if (recommend_banner != null && pic_url.size() >0) {
-            recommend_banner.setData(R.layout.item_image_carousel,pic_url,null);
-        }
-        mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     *最热
-     * @param homeHotColumn
-     */
-    @Override
-    public void getViewHotColumn(List<HomeHotColumn> homeHotColumn) {
-        mAdapter.getHomeHotColumn(homeHotColumn);
-    }
-
-    /**
-     * 颜值
-     * @param homeFaceScoreColumn
-     */
-    @Override
-    public void getViewFaceScoreColumn(List<HomeFaceScoreColumn> homeFaceScoreColumn) {
-        mAdapter.getFaceScoreColumn(homeFaceScoreColumn);
-    }
-
-    /**
-     * 热门
-     * @param homeRecommendHotCates
-     */
-    @Override
-    public void getViewHotcate(List<HomeRecommendHotCate> homeRecommendHotCates) {
-        homeRecommendHotCates.remove(1);
-        mAdapter.getAllColumn(homeRecommendHotCates);
     }
 }
