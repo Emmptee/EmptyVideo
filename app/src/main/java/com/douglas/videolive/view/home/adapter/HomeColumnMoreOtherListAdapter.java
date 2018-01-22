@@ -18,6 +18,7 @@ import com.douglas.videolive.ui.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.douglas.videolive.utils.CalculationUtils;
 import com.douglas.videolive.view.common.activity.PcLiveVideoActivity;
 import com.douglas.videolive.view.common.activity.PhoneLiveVideoActivity;
+import com.douglas.videolive.view.live.activity.webViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 
@@ -97,10 +98,9 @@ public class HomeColumnMoreOtherListAdapter extends BaseRecyclerAdapter<Recycler
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 } else if (mLiveList.get(position).getCate_id() == 207) {
-                    //TODO WEBVIEW
-//                    Intent intent = new Intent(context, WebViewActivity.class);
-//                    intent.putExtra("web_url", mLiveList.get(position).getJumpUrl()+"?from=dy");
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, webViewActivity.class);
+                    intent.putExtra("web_url", mLiveList.get(position).getJumpUrl()+"?from=dy");
+                    context.startActivity(intent);
                 } else {
                     Intent intent = new Intent(context, PcLiveVideoActivity.class);
                     Bundle bundle = new Bundle();

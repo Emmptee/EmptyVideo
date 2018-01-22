@@ -3,9 +3,11 @@ package com.douglas.videolive.view.live.activity;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,8 +19,13 @@ import com.douglas.videolive.base.SwipeBackActivity;
 import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-import static com.tencent.smtt.sdk.WebSettings.*;
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
 
 /**
  * Created by shidongfang on 2018/1/5.
@@ -67,8 +74,64 @@ public class webViewActivity extends SwipeBackActivity{
         webSettings.setJavaScriptEnabled(true);
         webSettings.setGeolocationEnabled(true);
         mWebView.setDrawingCacheEnabled(true);
-        webSettings
+        webSettings.setAppCacheMaxSize(Long.MAX_VALUE);
+        webSettings.setAppCachePath(this.getDir("appcache",0).getPath());
+        webSettings.setDatabasePath(this.getDir("databases",0).getPath());
+        webSettings.setGeolocationDatabasePath(this.getDir("geolocation",0).getPath());
+        webSettings.setPluginState(WebSettings.PluginState.ON_DEMAND);
+        initWebView();
+    }
 
+    private void initWebView() {
+        mWebView.setWebViewClient(new WebViewClient(){
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView webView, String s) {
+                webView.loadUrl(s);
+                return false;
+
+            }
+        });
+        mWebView.setWebChromeClient(new WebChromeClient(){//全屏播放设置
+            @Override
+            public void onShowCustomView(View view, int i, IX5WebChromeClient.CustomViewCallback customViewCallback) {
+                mCallback = customViewCallback;
+            }
+
+            @Override
+            public void onHideCustomView() {
+                if (mCallback != null) {
+                    mCallback.onCustomViewHidden();
+                    mCallback = null;
+                }
+
+                if (mWebView != null) {
+                    ViewGroup viewGroup = (ViewGroup) mWebView.getParent();
+                    viewGroup.removeView(mWebView);
+                }
+            }
+
+            @Override
+            public void onReceivedTitle(WebView webView, String s) {
+                super.onReceivedTitle(webView, s);
+                tvTitle.setText(s);
+            }
+
+            @Override
+            public void onProgressChanged(WebView webView, int i) {
+                super.onProgressChanged(webView, i);
+                changeProgress(i);
+            }
+        });
+    }
+
+    private void changeProgress(int i) {
+        if (i >= 0&& i<100){
+            mProgressBar.setProgress(i);
+            mProgressBar.setVisibility(View.VISIBLE);
+        }else if (i== 100){
+            mProgressBar.setProgress(100);
+            mProgressBar.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -80,9 +143,20 @@ public class webViewActivity extends SwipeBackActivity{
     protected BaseView getView() {
         return null;
     }
+    @OnClick(R.id.img_back)
+    public void back(){
+        finish();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
 
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
+    protected void onDestroy() {
+        if (mWebView != null) {
+            mWebView.destroy();
+        }
+        super.onDestroy();
     }
 }
