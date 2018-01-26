@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.douglas.videolive.model.logic.video.bean.VideoCateList;
+import com.douglas.videolive.view.video.fragment.OtherVideoFragment;
 import com.douglas.videolive.view.video.fragment.RecommendVideoFragment;
 
 import java.util.List;
@@ -29,9 +30,9 @@ class VideoAllListAdapter extends FragmentStatePagerAdapter{
     @Override
     public Fragment getItem(int position) {
         if (position==0){
-            return RecommendVideoFragment
+            return RecommendVideoFragment.getInstance();
         }
-        return null;
+        return OtherVideoFragment;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.douglas.videolive.view.video.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -34,6 +35,7 @@ public class RecommendVideoFragment extends BaseFragment<VideoRecommendModelLogi
     XRefreshView rtefreshContent;
 
     private SVProgressHUD svProgressHUD;
+    private VideoRecommendAdapter mVideoRecommendAdapter;
 
     public static RecommendVideoFragment getInstance(){
         RecommendVideoFragment rf = new RecommendVideoFragment();
@@ -41,22 +43,27 @@ public class RecommendVideoFragment extends BaseFragment<VideoRecommendModelLogi
     }
     @Override
     public void showErrorWithStatus(String msg) {
-
+        svProgressHUD.showErrorWithStatus(msg);
+        rtefreshContent.stopRefresh(false);
     }
 
     @Override
     public void getViewHotColumn(List<VideoHotColumn> mVideoHotColumn) {
-
+        if (rtefreshContent != null) {
+            rtefreshContent.stopRefresh();
+        }
+        mVideoRecommendAdapter.getVideoHotColumn(mVideoHotColumn);
     }
 
     @Override
     public void getViewHotAutherColumn(List<VideoHotAuthorColumn> videoHotAuthorColumns) {
-
+        mVideoRecommendAdapter.getFaceScoreColumn(videoHotAuthorColumns);
     }
 
     @Override
     public void getViewHotCate(List<VideoRecommendHotCate> videoRecommendHotCates) {
-
+        videoRecommendHotCates.remove(1);
+        mVideoRecommendAdapter.getAllColumn(videoRecommendHotCates);
     }
 
     @Override
@@ -81,8 +88,23 @@ public class RecommendVideoFragment extends BaseFragment<VideoRecommendModelLogi
             }
         };
         refresh();
-        new VideoRecommendAdapter()
+        mVideoRecommendAdapter = new VideoRecommendAdapter(getContext());
+        pool.setMaxRecycledViews(mVideoRecommendAdapter.getItemViewType(0),500);
+        recommendContentRecyclerview.setRecycledViewPool(pool);
+        recommendContentRecyclerview.setAdapter(mVideoRecommendAdapter);
+        setXrefreshViewConfig();
 
+    }
+
+    /**
+     * 配置xRefreshView
+     */
+    private void setXrefreshViewConfig() {
+        rtefreshContent.setPinnedContent(true);
+        rtefreshContent.setPinnedTime(2000);
+        rtefreshContent.setPullRefreshEnable(true);
+        rtefreshContent.setPullLoadEnable(false);
+        rtefreshContent.setMoveForHorizontal(true);
     }
 
     /**
@@ -97,12 +119,23 @@ public class RecommendVideoFragment extends BaseFragment<VideoRecommendModelLogi
 
     @Override
     protected void onEvent() {
-
+        rtefreshContent.setXRefreshViewListener(new XRefreshView.SimpleXRefreshListener(){
+            @Override
+            public void onRefresh() {
+                //延迟500毫秒
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        refresh();
+                    }
+                },500);
+            }
+        });
     }
 
     @Override
     protected BaseView getViewImp() {
-        return null;
+        return this;
     }
 
     @Override
