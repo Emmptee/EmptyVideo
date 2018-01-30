@@ -14,7 +14,7 @@ import java.util.List;
  * Created by shidongfang on 2018/1/23.
  */
 
-class VideoAllListAdapter extends FragmentStatePagerAdapter{
+public class VideoAllListAdapter extends FragmentStatePagerAdapter {
 
     private FragmentManager mFragmentManager;
     private List<VideoCateList> mVideoCateLists;
@@ -22,21 +22,27 @@ class VideoAllListAdapter extends FragmentStatePagerAdapter{
 
     public VideoAllListAdapter(FragmentManager fm, List<VideoCateList> videoCateLists, String[] title) {
         super(fm);
-        this.mFragmentManager= fm;
-        this.mVideoCateLists=videoCateLists;
-        this.mTitle= title;
+        this.mFragmentManager = fm;
+        this.mVideoCateLists = videoCateLists;
+        this.mTitle = title;
     }
 
     @Override
     public Fragment getItem(int position) {
-        if (position==0){
+        if (position == 0) {
             return RecommendVideoFragment.getInstance();
         }
-        return OtherVideoFragment;
+        return OtherVideoFragment.getInstance(mVideoCateLists.get(position - 1),position);
+
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return mTitle.length;
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mTitle[position];
     }
 }

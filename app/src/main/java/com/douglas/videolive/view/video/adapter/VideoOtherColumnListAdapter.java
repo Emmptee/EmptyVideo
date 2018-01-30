@@ -1,9 +1,9 @@
 package com.douglas.videolive.view.video.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,9 @@ import android.widget.TextView;
 import com.douglas.videolive.R;
 import com.douglas.videolive.model.logic.video.bean.VideoOtherColumnList;
 import com.douglas.videolive.ui.refreshview.recyclerview.BaseRecyclerAdapter;
-import com.douglas.videolive.view.live.adapter.LiveOtherColumnListAdapter;
+import com.douglas.videolive.utils.CalculationUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.douglas.videolive.view.live.activity.WebViewActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,18 +56,28 @@ public class VideoOtherColumnListAdapter extends BaseRecyclerAdapter<RecyclerVie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, boolean isItem) {
         if (holder instanceof LiveOtherColumnListHolder){
-            bindLiveAll(holder,position);
+            bindLiveAll((LiveOtherColumnListHolder) holder,position);
         }
     }
 
     private void bindLiveAll(LiveOtherColumnListHolder holder, int position) {
         holder.img_item_gridview.setImageURI(Uri.parse(mLiveList.get(position).getVideo_cover()));
-
+        holder.tv_column_item_nickname.setText(mLiveList.get(position).getVideo_title());
+        holder.tv_nickname.setText(mLiveList.get(position).getNickname());
+        holder.tv_online_num.setText(CalculationUtils.getOnLine(Integer.parseInt(mLiveList.get(position).getView_num())));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,WebViewActivity.class);
+                intent.putExtra("web_url","https://v.douyu.com/show/" + mLiveList.get(position).getHash_id());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getAdapterItemCount() {
-        return 0;
+        return this.mLiveList.size();
     }
 
     private class LiveOtherColumnListHolder extends RecyclerView.ViewHolder {

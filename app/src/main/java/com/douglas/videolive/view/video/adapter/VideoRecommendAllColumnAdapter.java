@@ -14,7 +14,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.douglas.videolive.R;
 import com.douglas.videolive.model.logic.video.bean.VideoRecommendHotCate;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.douglas.videolive.view.live.activity.webViewActivity;
+import com.douglas.videolive.view.live.activity.WebViewActivity;
 
 
 import java.text.SimpleDateFormat;
@@ -75,7 +75,7 @@ public class VideoRecommendAllColumnAdapter extends RecyclerView.Adapter<Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, webViewActivity.class);
+                Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("web_url", "https://v.douyu.com/show/" + mVideoListEntity.get(position).getHash_id());
                 context.startActivity(intent);
             }

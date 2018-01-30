@@ -31,7 +31,7 @@ import com.tencent.smtt.sdk.WebViewClient;
  * Created by shidongfang on 2018/1/5.
  */
 
-public class webViewActivity extends SwipeBackActivity{
+public class WebViewActivity extends SwipeBackActivity{
 
     @BindView(R.id.img_back)
     ImageView imgBack;

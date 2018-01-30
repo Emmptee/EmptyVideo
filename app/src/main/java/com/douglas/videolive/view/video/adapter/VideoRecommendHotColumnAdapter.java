@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.douglas.videolive.R;
 import com.douglas.videolive.model.logic.video.bean.VideoHotColumn;
 import com.douglas.videolive.utils.CalculationUtils;
-import com.douglas.videolive.view.live.activity.webViewActivity;
+import com.douglas.videolive.view.live.activity.WebViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public class VideoRecommendHotColumnAdapter extends RecyclerView.Adapter<Recycle
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, webViewActivity.class);
+                Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("web_url","https://v.douyu.com/show/"+
                         videoHotColumn.get(position).getHash_id());
                 context.startActivity(intent);

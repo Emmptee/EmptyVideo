@@ -28,7 +28,8 @@ public class videoReClassifyListAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return VideoOtherTwoColumnFragment;
+        return VideoOtherTwoColumnFragment.getInstance(mHomeCateLists.get(position),position);
+
     }
 
     @Override

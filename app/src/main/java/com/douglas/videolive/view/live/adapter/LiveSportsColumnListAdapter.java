@@ -14,7 +14,7 @@ import com.douglas.videolive.R;
 import com.douglas.videolive.model.logic.live.bean.LiveSportsAllList;
 import com.douglas.videolive.ui.refreshview.recyclerview.BaseRecyclerAdapter;
 import com.douglas.videolive.utils.CalculationUtils;
-import com.douglas.videolive.view.live.activity.webViewActivity;
+import com.douglas.videolive.view.live.activity.WebViewActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class LiveSportsColumnListAdapter extends BaseRecyclerAdapter<RecyclerVie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, webViewActivity.class);
+                Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("web_url", "http://m.live.qq.com/" + mLiveList.get(position).getRoom_id() + "?from=dy");
                 context.startActivity(intent);
             }

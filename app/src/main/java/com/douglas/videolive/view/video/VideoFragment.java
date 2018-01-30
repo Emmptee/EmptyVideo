@@ -61,7 +61,7 @@ public class VideoFragment extends BaseFragment<VideoCateListLogic,VideoCateList
 
     @Override
     public void showErrorWithStatus(String msg) {
-
+        mSvProgressHUD.showErrorWithStatus(msg);
     }
 
     @Override
@@ -75,6 +75,9 @@ public class VideoFragment extends BaseFragment<VideoCateListLogic,VideoCateList
         }
         //不摧毁fragment
         liveViewpager.setOffscreenPageLimit(mTitles.length);
-        VideoAllListAdapter videoAllListAdapter = new VideoAllListAdapter();
+        VideoAllListAdapter videoAllListAdapter = new VideoAllListAdapter(getChildFragmentManager(),cateLists,mTitles);
+        liveViewpager.setAdapter(videoAllListAdapter);
+        videoAllListAdapter.notifyDataSetChanged();
+        liveSlideingTab.setViewPager(liveViewpager,mTitles);
     }
 }
